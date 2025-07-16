@@ -10,16 +10,19 @@ android {
     defaultConfig {
         minSdk = 24
 
+        // Limit to only the ABIs you’ve prebuilt
         ndk {
-            abiFilters += setOf("arm64-v8a", "x86_64")
+            abiFilters.addAll(listOf("arm64-v8a", "x86_64"))
         }
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-        externalNativeBuild {
-            cmake {
-                cppFlags += ""
-            }
+    }
+
+    // Tell Gradle where to pick up your native .so files
+    sourceSets {
+        getByName("main") {
+            jniLibs.srcDirs("src/main/jniLibs")
         }
     }
 
@@ -32,6 +35,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -39,16 +43,11 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    externalNativeBuild {
-        cmake {
-            path = file("src/main/cpp/CMakeLists.txt")
-            version = "3.22.1"
-        }
-    }
+
+    // No externalNativeBuild block needed — we’re just packaging prebuilt .so files
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

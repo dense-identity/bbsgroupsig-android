@@ -14,6 +14,6 @@ include(FetchContent)
 FetchContent_Declare(
         bbsgroupsig
         GIT_REPOSITORY https://github.com/dense-identity/bbsgroupsig.git
-        GIT_TAG        v1.1.1
+        GIT_TAG        patch
 )
 FetchContent_MakeAvailable(bbsgroupsig)
